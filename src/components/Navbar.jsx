@@ -13,7 +13,7 @@ const Navbar = () => {
       <div className="navbar-container">
         {/* Logo */}
         <Link to="/" className="logo">
-          ShopEase
+          OxivosFashion
         </Link>
 
         {/* Desktop Navigation */}

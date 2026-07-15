@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
     <footer className="footer">
-      <h2>ShopEase</h2>
+      <h2>OxivosFashion</h2>
 
       <p>Your One-Stop Online Shopping Destination</p>
 
@@ -11,7 +11,7 @@ const Footer = () => {
         <span>Twitter</span>
       </div>
 
-      <p>© 2024 ShopEase. All rights reserved.</p>
+      <p>© 2024 OxivosFashion. All rights reserved.</p>
     </footer>
   );
 };
