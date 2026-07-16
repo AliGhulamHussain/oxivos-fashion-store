@@ -11,7 +11,7 @@ const Footer = () => {
         <span>Twitter</span>
       </div>
 
-      <p>© 2024 OxivosFashion. All rights reserved.</p>
+      <p>© 2026 OxivosFashion. All rights reserved.</p>
     </footer>
   );
 };
