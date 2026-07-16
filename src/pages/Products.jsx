@@ -1,31 +1,26 @@
 import { useEffect, useState } from "react";
+import { Search } from "lucide-react";
 
 import products from "../data/products";
-
 import Loader from "../components/Loader";
 import ProductCard from "../components/ProductCard";
 
 const categories = [
   "All",
-  "Panjabi",
-  "Shirts",
-  "T-Shirts",
-  "Pants",
-  "Jeans",
-  "Hoodies",
-  "Jackets",
-  "Shoes",
-  "Accessories",
+  ...new Set(products.map((p) => p.category)),
 ];
 
 const Products = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] =
+    useState(true);
 
   const [filteredProducts, setFilteredProducts] =
     useState([]);
 
   const [activeCategory, setActiveCategory] =
     useState("All");
+
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -36,88 +31,111 @@ const Products = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleFilter = (category) => {
-    setActiveCategory(category);
+  useEffect(() => {
+    let result = products;
 
-    if (category === "All") {
-      setFilteredProducts(products);
-      return;
+    if (activeCategory !== "All") {
+      result = result.filter(
+        (item) =>
+          item.category === activeCategory
+      );
     }
 
-    const filtered = products.filter(
-      (product) => product.category === category
-    );
+    if (search) {
+      result = result.filter((item) =>
+        item.name
+          .toLowerCase()
+          .includes(search.toLowerCase())
+      );
+    }
 
-    setFilteredProducts(filtered);
-  };
+    setFilteredProducts(result);
+  }, [activeCategory, search]);
 
   return (
-    <>
-      <h1
-        className="text-center mb-3"
-        style={{ marginBottom: "30px" }}
-      >
-        Our Collection
-      </h1>
+    <section>
+
+      <div className="products-header">
+
+        <div>
+
+          <h1>Shop Collection</h1>
+
+          <p>
+            Browse our premium fashion
+            collection.
+          </p>
+
+        </div>
+
+        <div className="search-box">
+
+          <Search size={18} />
+
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={search}
+            onChange={(e) =>
+              setSearch(e.target.value)
+            }
+          />
+
+        </div>
+
+      </div>
 
       {/* Categories */}
 
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          gap: "12px",
-          marginBottom: "40px",
-        }}
-      >
+      <div className="category-filter">
+
         {categories.map((category) => (
           <button
             key={category}
-            className="btn"
-            onClick={() =>
-              handleFilter(category)
+            className={
+              activeCategory === category
+                ? "category-btn active-category"
+                : "category-btn"
             }
-            style={{
-              background:
-                activeCategory === category
-                  ? "#222"
-                  : "#ff9800",
-            }}
+            onClick={() =>
+              setActiveCategory(category)
+            }
           >
             {category}
           </button>
         ))}
+
       </div>
 
-      {/* Products */}
+      <p className="products-count">
+        {filteredProducts.length} Products Found
+      </p>
 
       {loading ? (
         <Loader />
       ) : filteredProducts.length === 0 ? (
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: "80px",
-          }}
-        >
-          <h2>No products found.</h2>
+        <div className="empty-products">
+
+          <h2>No Products Found</h2>
 
           <p>
-            Try selecting another category.
+            Try another search or category.
           </p>
+
         </div>
       ) : (
         <div className="products-grid">
+
           {filteredProducts.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
             />
           ))}
+
         </div>
       )}
-    </>
+    </section>
   );
 };
 
