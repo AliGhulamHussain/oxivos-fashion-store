@@ -43,6 +43,7 @@ const ProductDetails = () => {
       ...product,
       selectedSize,
       selectedColor,
+      qty: 1,
     });
 
     setAdded(true);

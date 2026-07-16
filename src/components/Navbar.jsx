@@ -4,14 +4,9 @@ import { Menu, X, ShoppingBag } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
-  const { cart } = useCart();
+  const { cartCount } = useCart();
 
   const [isOpen, setIsOpen] = useState(false);
-
-  const cartCount = cart.reduce(
-    (total, item) => total + item.qty,
-    0
-  );
 
   const navLinks = [
     {

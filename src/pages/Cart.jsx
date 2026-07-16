@@ -1,4 +1,11 @@
 import { Link } from "react-router-dom";
+import {
+  ArrowLeft,
+  Minus,
+  Plus,
+  ShoppingBag,
+  Trash2,
+} from "lucide-react";
 
 import { useCart } from "../context/CartContext";
 
@@ -8,216 +15,278 @@ const Cart = () => {
     updateQuantity,
     removeFromCart,
     cartTotal,
+    clearCart,
   } = useCart();
+
+  // ==========================
+  // Empty Cart
+  // ==========================
 
   if (cart.length === 0) {
     return (
-      <div
-        className="text-center"
-        style={{
-          marginTop: "100px",
-        }}
-      >
-        <h1>🛒</h1>
+      <section className="section">
+        <div className="container">
 
-        <h2>Your Cart is Empty</h2>
+          <div className="empty-products">
 
-        <p className="mt-2">
-          Looks like you haven't added anything
-          yet.
-        </p>
+            <ShoppingBag
+              size={80}
+              color="#F59E0B"
+            />
 
-        <Link
-          className="btn mt-3"
-          to="/products"
-        >
-          Start Shopping
-        </Link>
-      </div>
+            <h2
+              style={{ marginTop: "25px" }}
+            >
+              Your Cart is Empty
+            </h2>
+
+            <p className="mt-2">
+              Looks like you haven't added
+              anything yet.
+            </p>
+
+            <Link
+              to="/products"
+              className="btn mt-3"
+            >
+              Start Shopping
+            </Link>
+
+          </div>
+
+        </div>
+      </section>
     );
   }
 
   return (
-    <>
-      <h1 className="mb-3">Shopping Cart</h1>
+    <section className="section">
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "2fr 1fr",
-          gap: "30px",
-        }}
-      >
-        {/* Cart Items */}
+      <div className="container">
 
-        <div>
-          {cart.map((item) => (
-            <div
-              key={item.id}
-              className="cart-item"
-            >
-              <img
-                src={item.image}
-                alt={item.name}
-              />
+        {/* Header */}
 
-              <div
-                style={{
-                  flex: 1,
-                }}
-              >
-                <h3>{item.name}</h3>
+        <Link
+          to="/products"
+          className="details-btn"
+          style={{
+            display: "inline-flex",
+            marginBottom: "30px",
+          }}
+        >
+          <ArrowLeft size={18} />
 
-                <p>
-                  ${item.price}
-                </p>
-
-                <p>
-                  Size:{" "}
-                  {item.selectedSize}
-                </p>
-
-                <p>
-                  Color:{" "}
-                  {item.selectedColor}
-                </p>
-
-                {/* Quantity */}
-
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "10px",
-                    alignItems: "center",
-                    marginTop: "15px",
-                  }}
-                >
-                  <button
-                    className="btn"
-                    onClick={() =>
-                      updateQuantity(
-                        item.id,
-                        item.qty - 1
-                      )
-                    }
-                  >
-                    -
-                  </button>
-
-                  <span>
-                    {item.qty}
-                  </span>
-
-                  <button
-                    className="btn"
-                    onClick={() =>
-                      updateQuantity(
-                        item.id,
-                        item.qty + 1
-                      )
-                    }
-                  >
-                    +
-                  </button>
-                </div>
-
-                <button
-                  onClick={() =>
-                    removeFromCart(item.id)
-                  }
-                  style={{
-                    marginTop: "15px",
-                    background: "transparent",
-                    color: "red",
-                  }}
-                >
-                  Remove
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Summary */}
+          Continue Shopping
+        </Link>
 
         <div
           style={{
-            background: "#fff",
-            padding: "25px",
-            borderRadius: "10px",
-            height: "fit-content",
-            boxShadow:
-              "0 5px 15px rgba(0,0,0,.08)",
+            display: "grid",
+            gridTemplateColumns:
+              "2fr 1fr",
+            gap: "40px",
+            alignItems: "start",
           }}
         >
-          <h2>Order Summary</h2>
 
-          <hr
-            style={{
-              margin: "20px 0",
-            }}
-          />
+          {/* ======================
+              Cart Items
+          ======================= */}
 
-          <p
-            style={{
-              display: "flex",
-              justifyContent:
-                "space-between",
-            }}
-          >
-            <span>Subtotal</span>
+          <div>
 
-            <span>${cartTotal}</span>
-          </p>
+            {cart.map((item) => (
 
-          <p
-            style={{
-              display: "flex",
-              justifyContent:
-                "space-between",
-              margin: "15px 0",
-            }}
-          >
-            <span>Shipping</span>
+              <div
+                key={`${item.id}-${item.selectedSize}-${item.selectedColor}`}
+                className="cart-item"
+              >
 
-            <span>Free</span>
-          </p>
+                {/* Image */}
 
-          <hr
-            style={{
-              margin: "20px 0",
-            }}
-          />
+                <img
+                  src={item.image}
+                  alt={item.name}
+                />
 
-          <h3
-            style={{
-              display: "flex",
-              justifyContent:
-                "space-between",
-            }}
-          >
-            <span>Total</span>
+                {/* Info */}
 
-            <span>${cartTotal}</span>
-          </h3>
+                <div
+                  style={{
+                    flex: 1,
+                  }}
+                >
 
-          <button
-            className="btn"
-            style={{
-              width: "100%",
-              marginTop: "25px",
-            }}
-            onClick={() =>
-              alert(
-                "Checkout is disabled in this demo."
-              )
-            }
-          >
-            Proceed to Checkout
-          </button>
+                  <h3>{item.name}</h3>
+
+                  <p>
+                    <strong>
+                      Category:
+                    </strong>{" "}
+                    {item.category}
+                  </p>
+
+                  <p>
+                    <strong>
+                      Color:
+                    </strong>{" "}
+                    {item.selectedColor}
+                  </p>
+
+                  <p>
+                    <strong>
+                      Size:
+                    </strong>{" "}
+                    {item.selectedSize}
+                  </p>
+
+                  <h3
+                    style={{
+                      color: "#F59E0B",
+                      marginTop: "10px",
+                    }}
+                  >
+                    ${item.price}
+                  </h3>
+
+                  {/* Quantity */}
+
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "15px",
+                      marginTop: "20px",
+                    }}
+                  >
+
+                    <button
+                      className="category-btn"
+                      onClick={() =>
+                        updateQuantity(
+                          item.id,
+                          item.selectedSize,
+                          item.selectedColor,
+                          item.qty - 1
+                        )
+                      }
+                    >
+                      <Minus size={16} />
+                    </button>
+
+                    <strong>
+                      {item.qty}
+                    </strong>
+
+                    <button
+                      className="category-btn"
+                      onClick={() =>
+                        updateQuantity(
+                          item.id,
+                          item.selectedSize,
+                          item.selectedColor,
+                          item.qty + 1
+                        )
+                      }
+                    >
+                      <Plus size={16} />
+                    </button>
+
+                  </div>
+
+                  {/* Remove */}
+
+                  <button
+                    onClick={() =>
+                      removeFromCart(
+                        item.id,
+                        item.selectedSize,
+                        item.selectedColor
+                      )
+                    }
+                    style={{
+                      marginTop: "20px",
+                      color: "crimson",
+                      background: "none",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
+
+                    <Trash2 size={18} />
+
+                    Remove
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            ))}
+                      </div>
+
+          {/* ======================
+              Order Summary
+          ======================= */}
+
+          <div className="cart-summary">
+
+            <h2>Order Summary</h2>
+
+            <p>
+              <span>Items</span>
+
+              <span>{cart.length}</span>
+            </p>
+
+            <p>
+              <span>Subtotal</span>
+
+              <span>${cartTotal.toFixed(2)}</span>
+            </p>
+
+            <p>
+              <span>Shipping</span>
+
+              <span>Free</span>
+            </p>
+
+            <hr />
+
+            <h3>
+              <span>Total</span>
+
+              <span>${cartTotal.toFixed(2)}</span>
+            </h3>
+
+            <button
+              className="btn"
+              onClick={() => {
+                clearCart();
+                alert(
+                  "Order placed successfully! Thank you for shopping with us."
+                );
+              }}
+            >
+              Proceed to Checkout
+            </button>
+
+            <button
+              className="category-btn w-100 mt-3"
+              onClick={clearCart}
+            >
+              Clear Cart
+            </button>
+
+          </div>
+
         </div>
+
       </div>
-    </>
+
+    </section>
   );
 };
 
