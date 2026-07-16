@@ -1,10 +1,8 @@
 import {
-  Facebook,
-  Instagram,
-  Twitter,
   Mail,
   Phone,
   MapPin,
+  Globe,
 } from "lucide-react";
 
 import { Link } from "react-router-dom";
@@ -86,21 +84,22 @@ const Footer = () => {
         <div>
           <h3>Follow Us</h3>
 
-          <div className="social-icons">
+    <div className="social-icons">
+  <a
+    href="#"
+    aria-label="Website"
+  >
+    <Globe />
+  </a>
 
-            <a href="#">
-              <Facebook />
-            </a>
+  <a href="mailto:hello@oxivosfashion.com">
+    <Mail />
+  </a>
 
-            <a href="#">
-              <Instagram />
-            </a>
-
-            <a href="#">
-              <Twitter />
-            </a>
-
-          </div>
+  <a href="tel:+8801688339967">
+    <Phone />
+  </a>
+</div>
 
           <p className="newsletter-text">
             Stay updated with our newest

@@ -1,9 +1,15 @@
 const Loader = () => {
   return (
-    <div className="loader-container">
-      <div className="loader"></div>
+    <div className="loader-wrapper">
 
-      <p>Loading products...</p>
+      <div className="loader-spinner"></div>
+
+      <h3>Loading Collection...</h3>
+
+      <p>
+        Bringing the latest fashion to you.
+      </p>
+
     </div>
   );
 };
