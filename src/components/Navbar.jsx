@@ -1,78 +1,129 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { Menu, X, ShoppingBag } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
   const { cart } = useCart();
+
   const [isOpen, setIsOpen] = useState(false);
 
-  const cartCount = cart.reduce((total, item) => total + item.qty, 0);
+  const cartCount = cart.reduce(
+    (total, item) => total + item.qty,
+    0
+  );
+
+  const navLinks = [
+    {
+      name: "Home",
+      path: "/",
+    },
+    {
+      name: "Shop",
+      path: "/products",
+    },
+  ];
 
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
+    <header className="navbar">
+      <div className="container navbar-container">
+
         {/* Logo */}
-        <Link to="/" className="logo">
-          OxivosFashion
+
+        <Link
+          to="/"
+          className="logo"
+        >
+          Oxivos
+          <span>Fashion</span>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="nav-links">
-          <NavLink
-            to="/"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Home
-          </NavLink>
 
-          <NavLink
-            to="/products"
-            className={({ isActive }) => (isActive ? "active" : "")}
+        <nav className="nav-links">
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.name}
+              to={link.path}
+              className={({ isActive }) =>
+                isActive
+                  ? "nav-link active"
+                  : "nav-link"
+              }
+            >
+              {link.name}
+            </NavLink>
+          ))}
+        </nav>
+
+        {/* Right */}
+
+        <div className="nav-right">
+
+          <Link
+            to="/cart"
+            className="cart-icon"
           >
-            Products
-          </NavLink>
+            <ShoppingBag size={22} />
+
+            {cartCount > 0 && (
+              <span className="cart-count">
+                {cartCount}
+              </span>
+            )}
+          </Link>
+
+          <button
+            className="mobile-toggle"
+            onClick={() =>
+              setIsOpen(!isOpen)
+            }
+          >
+            {isOpen ? (
+              <X size={28} />
+            ) : (
+              <Menu size={28} />
+            )}
+          </button>
         </div>
 
-        {/* Cart */}
-        <Link to="/cart" className="cart-btn">
-          🛒
-          {cartCount > 0 && (
-            <span className="cart-badge">{cartCount}</span>
-          )}
-        </Link>
-
-        {/* Hamburger */}
-        <button
-          className="menu-btn"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          ☰
-        </button>
       </div>
 
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="mobile-menu">
-          <NavLink to="/" onClick={() => setIsOpen(false)}>
-            Home
-          </NavLink>
+      {/* Mobile */}
 
+      <div
+        className={`mobile-menu ${
+          isOpen ? "show" : ""
+        }`}
+      >
+        {navLinks.map((link) => (
           <NavLink
-            to="/products"
-            onClick={() => setIsOpen(false)}
+            key={link.name}
+            to={link.path}
+            onClick={() =>
+              setIsOpen(false)
+            }
+            className={({ isActive }) =>
+              isActive
+                ? "mobile-link active"
+                : "mobile-link"
+            }
           >
-            Products
+            {link.name}
           </NavLink>
+        ))}
 
-          <NavLink
-            to="/cart"
-            onClick={() => setIsOpen(false)}
-          >
-            Cart ({cartCount})
-          </NavLink>
-        </div>
-      )}
-    </nav>
+        <Link
+          to="/cart"
+          className="mobile-link"
+          onClick={() =>
+            setIsOpen(false)
+          }
+        >
+          Cart ({cartCount})
+        </Link>
+      </div>
+    </header>
   );
 };
 
