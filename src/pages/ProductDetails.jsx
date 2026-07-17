@@ -89,11 +89,7 @@ const ProductDetails = () => {
 
         <Link
           to="/products"
-          className="details-btn"
-          style={{
-            display: "inline-flex",
-            marginBottom: "30px",
-          }}
+          className="details-btn details-back-link"
         >
           <ArrowLeft size={18} />
 
@@ -104,9 +100,10 @@ const ProductDetails = () => {
 
           {/* Product Image */}
 
-          <div>
+          <div className="product-image-shell">
 
             <img
+              className="product-image"
               src={product.image}
               alt={product.name}
             />
@@ -157,7 +154,7 @@ const ProductDetails = () => {
 
               <h4>Select Size</h4>
 
-              <div>
+              <div className="detail-option-buttons">
 
                 {product.sizes.map((size) => (
 
@@ -187,7 +184,7 @@ const ProductDetails = () => {
 
               <h4>Select Color</h4>
 
-              <div>
+              <div className="detail-option-buttons">
 
                 {product.colors.map((color) => (
 
@@ -217,14 +214,8 @@ const ProductDetails = () => {
 
               <h4>Quantity</h4>
 
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "15px",
-                  marginTop: "12px",
-                }}
-              >
+              <div className="quantity-control">
+
 
                 <button
                   className="category-btn"
@@ -233,7 +224,7 @@ const ProductDetails = () => {
                   <Minus size={16} />
                 </button>
 
-                <strong>{quantity}</strong>
+                <strong className="quantity-value">{quantity}</strong>
 
                 <button
                   className="category-btn"
@@ -268,21 +259,10 @@ const ProductDetails = () => {
 
             {/* Extra Information */}
 
-            <div
-              style={{
-                marginTop: "40px",
-                display: "grid",
-                gap: "20px",
-              }}
-            >
+            <div className="product-features">
 
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "12px",
-                }}
-              >
+              <div className="product-feature">
+
                 <Truck
                   size={22}
                   color="#F59E0B"
@@ -303,13 +283,8 @@ const ProductDetails = () => {
 
               </div>
 
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "12px",
-                }}
-              >
+              <div className="product-feature">
+
                 <ShieldCheck
                   size={22}
                   color="#10B981"
@@ -335,24 +310,15 @@ const ProductDetails = () => {
 
             {/* Product Highlights */}
 
-            <div
-              style={{
-                marginTop: "35px",
-              }}
-            >
+            <div className="product-highlights">
+
 
               <h4>
                 Product Highlights
               </h4>
 
-              <ul
-                style={{
-                  marginTop: "15px",
-                  paddingLeft: "20px",
-                  color: "#6B7280",
-                  lineHeight: "1.8",
-                }}
-              >
+              <ul>
+
                 <li>
                   Premium quality fabric
                 </li>

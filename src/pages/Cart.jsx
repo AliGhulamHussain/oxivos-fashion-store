@@ -34,9 +34,8 @@ const Cart = () => {
               color="#F59E0B"
             />
 
-            <h2
-              style={{ marginTop: "25px" }}
-            >
+            <h2 className="empty-products-title">
+
               Your Cart is Empty
             </h2>
 
@@ -68,26 +67,15 @@ const Cart = () => {
 
         <Link
           to="/products"
-          className="details-btn"
-          style={{
-            display: "inline-flex",
-            marginBottom: "30px",
-          }}
+          className="details-btn details-back-link"
         >
           <ArrowLeft size={18} />
 
           Continue Shopping
         </Link>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "2fr 1fr",
-            gap: "40px",
-            alignItems: "start",
-          }}
-        >
+        <div className="cart-layout">
+
 
           {/* ======================
               Cart Items
@@ -105,17 +93,15 @@ const Cart = () => {
                 {/* Image */}
 
                 <img
+                  className="cart-item-image"
                   src={item.image}
                   alt={item.name}
                 />
 
                 {/* Info */}
 
-                <div
-                  style={{
-                    flex: 1,
-                  }}
-                >
+                <div className="cart-item-content">
+
 
                   <h3>{item.name}</h3>
 
@@ -140,25 +126,15 @@ const Cart = () => {
                     {item.selectedSize}
                   </p>
 
-                  <h3
-                    style={{
-                      color: "#F59E0B",
-                      marginTop: "10px",
-                    }}
-                  >
+                  <h3 className="cart-item-price">
+
                     ${item.price}
                   </h3>
 
                   {/* Quantity */}
 
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "15px",
-                      marginTop: "20px",
-                    }}
-                  >
+                  <div className="quantity-control cart-quantity-control">
+
 
                     <button
                       className="category-btn"
@@ -197,6 +173,7 @@ const Cart = () => {
                   {/* Remove */}
 
                   <button
+                    className="remove-btn"
                     onClick={() =>
                       removeFromCart(
                         item.id,
@@ -204,14 +181,6 @@ const Cart = () => {
                         item.selectedColor
                       )
                     }
-                    style={{
-                      marginTop: "20px",
-                      color: "crimson",
-                      background: "none",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                    }}
                   >
 
                     <Trash2 size={18} />
