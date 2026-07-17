@@ -1,5 +1,15 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import {
+  ArrowLeft,
+  Check,
+  Minus,
+  Plus,
+  ShieldCheck,
+  ShoppingCart,
+  Star,
+  Truck,
+} from "lucide-react";
 
 import products from "../data/products";
 import { useCart } from "../context/CartContext";
@@ -8,24 +18,31 @@ const ProductDetails = () => {
   const { id } = useParams();
 
   const product = products.find(
-    (p) => p.id === parseInt(id)
+    (item) => item.id === Number(id)
   );
 
   const { addToCart } = useCart();
 
   if (!product) {
     return (
-      <div className="text-center">
-        <h2>Product Not Found</h2>
+      <section className="section">
+        <div className="container text-center">
 
-        <p className="mt-2">
-          The product you're looking for doesn't exist.
-        </p>
+          <h2>Product Not Found</h2>
 
-        <Link className="btn mt-3" to="/products">
-          Back to Products
-        </Link>
-      </div>
+          <p className="mt-2">
+            Sorry, the requested product does not exist.
+          </p>
+
+          <Link
+            to="/products"
+            className="btn mt-3"
+          >
+            Back to Products
+          </Link>
+
+        </div>
+      </section>
     );
   }
 
@@ -33,17 +50,29 @@ const ProductDetails = () => {
     product.sizes[0]
   );
 
-  const [selectedColor, setSelectedColor] =
-    useState(product.colors[0]);
+  const [selectedColor, setSelectedColor] = useState(
+    product.colors[0]
+  );
+
+  const [quantity, setQuantity] = useState(1);
 
   const [added, setAdded] = useState(false);
 
-  const handleAdd = () => {
+  const increaseQty = () =>
+    setQuantity((prev) => prev + 1);
+
+  const decreaseQty = () => {
+    if (quantity > 1) {
+      setQuantity((prev) => prev - 1);
+    }
+  };
+
+  const handleAddToCart = () => {
     addToCart({
       ...product,
+      qty: quantity,
       selectedSize,
       selectedColor,
-      qty: 1,
     });
 
     setAdded(true);
@@ -54,132 +83,306 @@ const ProductDetails = () => {
   };
 
   return (
-    <>
-      <Link to="/products">← Back to Products</Link>
+    <section className="section">
 
-      <div className="product-details mt-3">
-        {/* Image */}
+      <div className="container">
 
-        <div>
-          <img
-            src={product.image}
-            alt={product.name}
-          />
-        </div>
+        <Link
+          to="/products"
+          className="details-btn"
+          style={{
+            display: "inline-flex",
+            marginBottom: "30px",
+          }}
+        >
+          <ArrowLeft size={18} />
 
-        {/* Info */}
+          Back to Products
+        </Link>
 
-        <div className="product-info">
-          <h2>{product.name}</h2>
+        <div className="product-details">
 
-          <h3
-            style={{
-              color: "#ff9800",
-              margin: "15px 0",
-            }}
-          >
-            ${product.price}
-          </h3>
+          {/* Product Image */}
 
-          <p>
-            ⭐ {product.rating} / 5
-          </p>
+          <div>
 
-          <p>{product.description}</p>
+            <img
+              src={product.image}
+              alt={product.name}
+            />
 
-          <p>
-            <strong>Stock:</strong>{" "}
-            {product.inStock ? (
-              <span
-                style={{ color: "green" }}
-              >
-                In Stock
-              </span>
-            ) : (
-              <span
-                style={{ color: "red" }}
-              >
-                Out of Stock
-              </span>
-            )}
-          </p>
+          </div>
 
-          {/* Sizes */}
+          {/* Product Info */}
 
-          <div className="mt-3">
-            <h4>Select Size</h4>
+          <div className="product-info">
 
-            <div
-              style={{
-                display: "flex",
-                gap: "10px",
-                marginTop: "10px",
-              }}
+            <span
+              className={
+                product.inStock
+                  ? "product-badge"
+                  : "product-badge out"
+              }
             >
-              {product.sizes.map((size) => (
-                <button
-                  key={size}
-                  className="btn"
-                  onClick={() =>
-                    setSelectedSize(size)
-                  }
-                  style={{
-                    background:
+              {product.inStock
+                ? "In Stock"
+                : "Out of Stock"}
+            </span>
+
+            <h2>{product.name}</h2>
+
+            <div className="product-rating">
+
+              <Star
+                size={18}
+                fill="#FACC15"
+                color="#FACC15"
+              />
+
+              <span>
+                {product.rating} / 5
+              </span>
+
+            </div>
+
+            <h3>৳ {product.price}</h3>
+
+            <p>
+              {product.description}
+            </p>
+
+            {/* Size */}
+
+            <div className="mt-3">
+
+              <h4>Select Size</h4>
+
+              <div>
+
+                {product.sizes.map((size) => (
+
+                  <button
+                    key={size}
+                    className={
                       selectedSize === size
-                        ? "#222"
-                        : "#ff9800",
-                  }}
-                >
-                  {size}
-                </button>
-              ))}
+                        ? "btn"
+                        : "category-btn"
+                    }
+                    onClick={() =>
+                      setSelectedSize(size)
+                    }
+                  >
+                    {size}
+                  </button>
+
+                ))}
+
+              </div>
+
             </div>
-          </div>
 
-          {/* Colors */}
+            {/* Color */}
 
-          <div className="mt-3">
-            <h4>Select Color</h4>
+            <div className="mt-3">
+
+              <h4>Select Color</h4>
+
+              <div>
+
+                {product.colors.map((color) => (
+
+                  <button
+                    key={color}
+                    className={
+                      selectedColor === color
+                        ? "btn"
+                        : "category-btn"
+                    }
+                    onClick={() =>
+                      setSelectedColor(color)
+                    }
+                  >
+                    {color}
+                  </button>
+
+                ))}
+
+              </div>
+
+            </div>
+
+            {/* Quantity */}
+
+            <div className="mt-3">
+
+              <h4>Quantity</h4>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "15px",
+                  marginTop: "12px",
+                }}
+              >
+
+                <button
+                  className="category-btn"
+                  onClick={decreaseQty}
+                >
+                  <Minus size={16} />
+                </button>
+
+                <strong>{quantity}</strong>
+
+                <button
+                  className="category-btn"
+                  onClick={increaseQty}
+                >
+                  <Plus size={16} />
+                </button>
+
+              </div>
+
+            </div>
+
+                        {/* Add To Cart */}
+
+            <button
+              className="btn"
+              onClick={handleAddToCart}
+              disabled={!product.inStock}
+            >
+              {added ? (
+                <>
+                  <Check size={20} />
+                  Added to Cart
+                </>
+              ) : (
+                <>
+                  <ShoppingCart size={20} />
+                  Add to Cart
+                </>
+              )}
+            </button>
+
+            {/* Extra Information */}
 
             <div
               style={{
-                display: "flex",
-                gap: "10px",
-                marginTop: "10px",
+                marginTop: "40px",
+                display: "grid",
+                gap: "20px",
               }}
             >
-              {product.colors.map((color) => (
-                <button
-                  key={color}
-                  className="btn"
-                  onClick={() =>
-                    setSelectedColor(color)
-                  }
-                  style={{
-                    background:
-                      selectedColor === color
-                        ? "#222"
-                        : "#ff9800",
-                  }}
-                >
-                  {color}
-                </button>
-              ))}
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                }}
+              >
+                <Truck
+                  size={22}
+                  color="#F59E0B"
+                />
+
+                <div>
+
+                  <strong>
+                    Free Shipping
+                  </strong>
+
+                  <p>
+                    Free delivery on orders over
+                    ৳2000.
+                  </p>
+
+                </div>
+
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                }}
+              >
+                <ShieldCheck
+                  size={22}
+                  color="#10B981"
+                />
+
+                <div>
+
+                  <strong>
+                    Secure Checkout
+                  </strong>
+
+                  <p>
+                    Your payment information is
+                    protected with secure
+                    encryption.
+                  </p>
+
+                </div>
+
+              </div>
+
             </div>
+
+            {/* Product Highlights */}
+
+            <div
+              style={{
+                marginTop: "35px",
+              }}
+            >
+
+              <h4>
+                Product Highlights
+              </h4>
+
+              <ul
+                style={{
+                  marginTop: "15px",
+                  paddingLeft: "20px",
+                  color: "#6B7280",
+                  lineHeight: "1.8",
+                }}
+              >
+                <li>
+                  Premium quality fabric
+                </li>
+
+                <li>
+                  Comfortable regular fit
+                </li>
+
+                <li>
+                  Perfect for everyday wear
+                </li>
+
+                <li>
+                  Easy to wash and maintain
+                </li>
+
+                <li>
+                  Durable stitching and finish
+                </li>
+              </ul>
+
+            </div>
+
           </div>
 
-          <button
-            className="btn mt-3"
-            onClick={handleAdd}
-            disabled={!product.inStock}
-          >
-            {added
-              ? "✓ Added to Cart"
-              : "Add to Cart"}
-          </button>
         </div>
+
       </div>
-    </>
+
+    </section>
   );
 };
 
